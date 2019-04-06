@@ -1,0 +1,465 @@
+%% FILENAME: paper.tex
+%% AUTHOR:   Cameron Swords
+
+\documentclass[10pt]{article}
+
+\input{defs.tex}
+
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+
+\begin{document}
+
+
+
+\begin{titlepage}
+	\vspace*{\stretch{1.0}}
+	\begin{center}
+		\Large\textbf{Typed closure conversion using Logical Relations}\\
+		\bigbreak
+		\large\textit{Aarti Kashyap} \\
+		\large\textit{University of British Columbia}\\
+			\large\textit{19115724}
+		
+	\end{center}
+	\vspace*{\stretch{2.0}}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction} 
+Logical relations was first introduced by Gordon Plotkin who was also the first to introduce operational semantics. Logical relations are type indexed inductive relations. In this work, I attempt to perform typed closure conversion using cross-language logical relation. The final goal was supposed to prove compositional compiler verification. However, due to time constraints, I stick to the initial part like I explain above. 
+
+
+\subsection{Logical Relations}
+The first part of the project was to understand how to define a logical relation. Logical relations can be split into two categories: logical predicates and logical relations.
+\subsubsection{Logical predicates}
+ Logical predicates are the unary relations. These are defined by      P\textsubscript{$\tau$}(e). This means that some predicate P holds for some expression e over type $\tau$. These types of relations can be used to prove strong normalization and type safety.
+ \subsubsection{Logical Relations}
+ The second type of logical relations are termed as binary relations. These are described as R\textsubscript{$\tau$}(e1,e2). This expression says that there exists some relation R between terms e1 and e2 of the two languages. This type of relation can be used for showing program equivalence or some form of program equivalence. 
+ 
+ \subsection{Why do we need logical relations}
+ Using logical relations is very useful. Properties such as strong normalization and type-safety are very useful in languages with a well-defined type-system. However, the most interesting part about using LRs is in the case of equivalence of programs. 
+ \newline
+ Equivalence of programs within a programming language has a lot of benefits. We can us it to check the equivalence after we apply optimizations, to check the correctness of the program. We can also use it for security properties. To make sure that information flow policies hold. 
+ \subsection{Defining a logical relation}
+  In general, for a
+  logical predicate Pτ and an expression e, we want e to be accepted by the predicate
+  if it satisfies the following properties.
+  \begin{enumerate}
+  	\item $\bullet$ $\envent${e}{$\tau$} 
+  	\item The property we wish e to have.
+  	\item The condition is preserved by eliminating forms.
+  \end{enumerate}
+  
+  
+  \section{Simply Types Lambda Calculus (STLC)}
+  The simply Typed Lambda calculus is defined as follows. 
+  
+  
+\subsection{Language Definition}
+  
+  \[
+  \begin{array}{rcl}
+  e  &:=&  v \alt e~e \alt \\
+  &\alt& \ife{e}{e}{e} \\
+  \\ %% A line break before the next definition sets
+  v  &:=&  x \alt \lamdefe{x}{e} \alt n \\
+  \\
+  \tau  &:=& int \alt \funct{\tau}{\tau}\\
+  \end{array}
+  \]
+  
+  The typing context is defined as 
+%   \bullet \envent{e}{$\tau$} 
+   
+   \subsection{Semantics}
+  
+  
+
+    \begin{gather*}
+	\infr[App]
+{\dstep{e_1}{\lamdefe{x}{e'}} \iand \dstep{e_2}{v} \iand \cdots}
+{\dstep{e_1~e_2}{\subst{x}{v}{e'}}}
+  ~
+  \infr
+  {\dstep{e_1}{\falsev} \iand \dstep{e_3}{v}}
+  {\dstep{\ife{e_1}{e_2}{e_3}}{v}}
+  \\
+  \end{gather*}
+  
+  \subsection{Typing Judgements}
+  \[
+  \begin{array}{cc}
+  
+  \envlookup{\typeEnv}{x}{\tau} 
+  &
+  \infr
+  {\extenvent{x}{\tau}{e}{\tau'}}
+  {\envent{\lamdefe{x}{e}}{\funct{\tau}{\tau'}}} 
+  \\\\
+  \infr
+  {\envent{e_1}{\funct{\tau}{\tau'}} \iand 
+  	\envent{e_2}{\tau}}
+  {\envent{e_1~e_2}{\tau'}} 
+  &
+   \infr
+  {\envent{e_1}{int} \iand \envent{e_2}{\tau} \iand \envent{e_3}{\tau}}
+  {\envent{\ife{e_1}{e_2}{e_3}}{\tau}}
+  \\\\
+ 
+  &
+  
+  \\\\
+  \end{array}
+  \]
+  
+  
+  The STLC is defined in the simplest way possible.
+  
+  
+  \newpage
+  \section{Strong-normalization for STLC using Logical Relations}
+  In this section, I try to show that simply typed lambda calculus has strong normalization which means that every term is strongly normalizing. If a term is strongly normalizing, then it reduces to its normal form. In our case, the normal forms of the language are the values of the language for STLC.
+  
+  \subsection{Why do we need logical predicates?}
+  \textbf{Theorem} ( Strong Normalization)
+  \newline
+  \vskip 0.1in
+%  If $ \bullet $ \envent{e}{$\tau$} then $\dstep${e}{}
+\vskip 0.2in
+I first try to prove the above property using induction on the typing derivation. And I see that it fails.
+\vskip 0.1in
+
+\textit{Proof}. > The proof fails for the application case.
+
+  
+   \[
+  \begin{array}{cc}
+  
+  
+  \infr
+  {\envent{e_1}{\funct{\tau}{\tau'}} \iand 
+  	\envent{e_2}{\tau}}
+  {\envent{e_1~e_2}{\tau'}} 
+ 
+  &
+  
+  \\\\
+  \end{array}
+  \]
+  By induction hypothesis we get that ${\dstep{e_1}{v_1}}$ and ${\dstep{e_2}{v_2}}$. By the type of $e_1$, we
+ % conclude ${\dstep{e_1}{\lamdefe{x : \tau_2}{e'}}$
+  . What I need to show is $e_1 e_2 \dstep{}{}$.
+  \vskip 0.1in
+  However, I  run into an issue as we do not know anything about $e'$. This tells us that our induction hypothesis is not strong enough. 
+  
+  \subsection{Defining Logical predicate}
+  
+ I define a logical predicate SN \textsubscript{$\tau$}(e). The entire point of defining  SN \textsubscript{$\tau$}(e) is such that it accepts expressions of type $\tau$ that are strongly normalizing. 
+ 
+ \vskip 0.2in
+ 
+ Properties to be kept in mind when defining logical predicates
+  \vskip 0.2in
+ SN \textsubscript{int}(e) $\Longleftrightarrow  \bullet \vdash e: int \wedge e \Downarrow $ 
+ % \vskip 
+%  SN \textsubscript{$\funct{\tau_1}{\tau_2}$} 
+ % (e) $\Longleftrightarrow  \bullet \vdash e: \funct{\tau_1}{\tau_2} \wedge e \Downarrow $ $ \wedge \forall e'.$ SN \textsubscript{$\tau_1$}(e') $\Longrightarrow $SN \textsubscript{$\tau_2$}($ee'$) 
+\subsection{SN using Logical predicates}
+  
+  The proof is done in two steps:
+  \vskip 0.2in
+  \begin{enumerate}
+  	\item  $ \bullet \vdash e: \tau \Longrightarrow$ SN  \textsubscript{$\tau$} $(e)$
+  	\item  SN  \textsubscript{$\tau$} $(e) \Longrightarrow e \Downarrow$
+  \end{enumerate}
+
+The structure of proof is common to proofs that use logical relations. When we try to use logical relations in order to prove compiler correctness we will arrive at similar results. 
+\vskip 0.2in
+\textbf{Theorem} ( Generalized version of 1.) If $\Gamma \vdash e : \tau $ and $\gamma \models \Gamma $, then SN\textsubscript{$\tau$}$ ( \gamma (e))$
+\vskip 0.1in
+The theorem basically says that if e is well typed with respect to some type $\tau$ and we have some closing substitution that satisfies the typing environment, then if e is closed with respect to $\gamma$, then this expression can be termed as SN\textsubscript{$\tau$}.
+
+\vskip 0.2in
+\textbf{Lemma} ( Substitution Lemma) If $\Gamma \vdash e : \tau $ and $\gamma \models \Gamma $, then $ \bullet \vdash \gamma (e) : \tau $
+ \vskip 0.1in 
+ \textbf{Lemma} (SN preserved by forward/backward reduction) 
+
+  \vskip 0.2in 
+  
+After proving the lemmas, generalized proof can be proved by proof by induction on $\Gamma \vdash e : \tau $
+  \vskip 0.1in
+  The proof is not explained in detail here but it can be done using induction. The purpose of this part was to get familiar with logical relations. Constructing the definition of logical relations is more important than the proof. The reason is because as we can see from the above methodology, we construct the predicate such that the proof follows easily from it. 
+  
+  
+\vskip 0.1in
+Similary, we can prove type-safety and equivalence of programs using logical relations.   
+\vskip 0.2in
+
+\textbf{Now, with a little background on how logical relations work while proving properties in a single programming language the next step is taken. The next part is the interesting part, where an attempt is made to use binary logical properties to prove something useful.}
+
+\newpage
+\section{Compiler Correctness }
+The initial project goal was to use logical relations to prove full abstraction compiler correctness all the way down from a subset of C to a subset  of Ocaml. The Project has briefly given an overview as to how to construct logical relations. The construction methodology remains pretty similar. 
+\vskip 0.2in
+\textbf{Compiler translation} In this work the compiler translation we consider is typed closure conversion.
+
+\subsection{Closure conversion}
+The source language is the STLC described in Section 2. When we are computing in a different language, we start by translating to the language. Suppose, we have $e_1, e_2 and e_3$ put together. We can translate them individually. However, $e_2$ might contain a function with free variables. Hence, we need closure conversion. After doing that, the free variables can be hoisted up to the top.
+
+\vskip 0.1in
+
+\subsubsection{Example}
+
+$\lambda x:  int ( x + y + z)$
+\vskip 0.2in
+After applying closure conversion
+\vskip 0.1in
+$\lambda (( z: \tau_e, x:int, x + \pi_1y + \pi_1z) , < y,w>)$
+\vskip 0.2in
+$\pi_1$ is the first component of the new new environment defined.
+\vskip 0.1 in
+$\pi_2$ is the second component of the new new environment defined.
+
+\subsubsection{General form of closure conversion}
+
+So in general for representing all functions in the form as shown in the above example, a general format can be defined. 
+\vskip 0.2in
+$ \exists \alpha ((\alpha, int) \rightarrow int)x \alpha$
+\vskip 0.1in
+Hence, we can see that the target language should have existential types. Instead of defining the source and target languages and then beginning the logical relations. I started with the simplest source language with a type system. Based on the translation, I defined my target language. Using existential types I can implement an interface which allows closure conversion. This is a generic way of representing any function as we want. 
+
+
+\subsection{Target Language}
+
+\[
+\begin{array}{rcl}
+e  &:=&  v \alt e-e \alt  < e_1, .... e_n >  \\
+&\alt& \ife{e}{e}{e} \alt  \pi_1e  \\
+&\alt&  pack ( \tau, e) \space as \space \exists \alpha. \tau \alt e(\tau)  \\
+&\alt&  unpack ( \alpha, x) = e_1 in e_2   \\
+\\ %% A line break before the next definition sets
+v  &:=&  x \alt \lamdefe{x:\tau}{e} \alt n \alt <v_1,...,v_n> \\
+\\
+\tau  &:=& int \alt \funct{(\tau_1,...\tau_n)}{\tau'} \alt <\tau_1,...,\tau_n>\\
+&\alt&  \alpha \alt \exists \alpha.\tau \alt \forall \alpha.\tau \\
+\end{array}
+\]
+                                                                    \vskip 0.2in
+The evaluation function is defined as
+\vskip 0.1in
+ $\bigtriangleup,\Gamma\vdash e: \tau $                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+  \subsection{Typing rules}
+  \vskip 0.2in
+  Pack is how we create something of existential type, it is our introduction form. I think I stumbled a bit on this part during the presentation. 
+  \vskip 0.1in
+  I also need an elimination form which is unpack. unpack takes apart a package so that we can
+  use its components.  A package consists of a witness type and an expression that
+  implements an existential type. The following typing rules are defined for the two constructs pack and unpack. 
+  
+  \[
+  \begin{array}{cc}
+ 
+  \\\\
+  
+  \infr
+  {\bigtriangleup,\envent{e}{\tau[\tau' / \alpha]} \iand
+  	\bigtriangleup \vdash{\tau'}}
+  {\bigtriangleup, \envent{pack < \tau', e > as \exists \alpha.\tau}{\exists \alpha.\tau}}
+
+ 
+  \\\\
+   \multicolumn{2}{c}{ %% for a really LOOOOONG rule
+  	\infr
+  	 {\bigtriangleup,\envent{e_1}{\exists \alpha.\tau} \iand
+  		                        \bigtriangleup,\envent{e_1}{\exists \alpha.\tau}             \iand
+  	\bigtriangleup \vdash{\tau_2}}
+  	 {\bigtriangleup, \envent{unpack < \alpha, x > = e_1 in e_2} \tau_2}
+  }
+  \end{array}
+  \]
+  
+ \subsection{Types Translation}
+  
+  $\Gamma \textsuperscript{+}$
+  \vskip 0.2in
+  I will be defining the type translation with the above symbol. 
+  \vskip 0.2in
+  int \textsuperscript{+} = int
+  \vskip 0.1in
+  $( \tau_1 \rightarrow \tau_2) = \exists \alpha. \textless((\alpha, \tau_1 \textsuperscript{+}) \rightarrow \tau_2 \textsuperscript{+}), \alpha \textgreater $
+  
+  \vskip 0.2in
+  The point of producing such translations so that it satisfies a type-preserving compilation. 
+  \vskip 0.2in
+  $\Gamma \vdash : \tau \curvearrowright \textbf{e}$
+  \vskip 0.2in
+  We want to show type-preserving compiler. 
+  
+  \vskip 0.4in
+  
+  \textit{It was becoming more and more difficult to use Latex, hence I skip a lot of details here. If you feel I should have included more, I will add them. The details are the same which I showed on the blackboard during the presentation. }
+  \vskip 0.2in
+  
+  Most of the type translations are straight forward which are the variables and the numbers. The interesting cases are the lambda and the application. 
+  
+ The Lamda case makes use of pack in order to translate. The application uses unpack. We just need to make sure that after the translation the types of the translated term are in the same environment. 
+  
+  
+  \subsection{Logical relations}
+  For every source language, we want to relate it to the target language. The translation can be doing anything, but we do not care about that, so long after the translations the properties are being maintained. 
+  \vskip 0.2in
+  My aim here is to use the method of defining unary logical relations to extend to binary logical relations. 
+  
+  \vskip 0.2in
+   V[[$\tau$]] = { (Vs,Vt) $\lvert$ $\bullet \vdash$ Vs : $\tau \wedge \bullet \vdash$ Vt : $\tau \textsuperscript{+}$ ...}
+   
+   \vskip 0.2in
+   The logical relation for the two languages is defined similar to how I had defined at the very beginning for proving strong normalization. 
+   \vskip 0.1in
+   The first part is the relation. The second part is the property we are concerned about and finally something else. 
+   What the property says is that if source has some type $\tau$ then the target should have some type $\tau$ \textsuperscript{+}
+   
+   \vskip 0.2in
+   By doing induction over tupe derivates we can find the relation bet
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  \newpage
+\section{Language Definitions}
+
+\[
+  \begin{array}{rcl}
+  e  &:=& x \alt v \alt e~e \alt \letdefe{x}{e}{e}\\
+     &\alt& \ife{e}{e}{e} \alt \unope{e} \alt \binope{e}{e}\\
+  \\ %% A line break before the next definition sets
+  v  &:=& \lamdefe{x}{e} \alt \truev \alt \falsev\\
+  \\
+  \binopdef &:=& \andop \alt \orop\\
+  \unopdef  &:=& \notop \\
+  \\
+  \Ctxt &:=& \Ctxt~e \alt v~\Ctxt \alt \letdefe{x}{\Ctxt}{e}\\
+  &\alt& \ife{\Ctxt}{e}{e} \alt \unope{\Ctxt} \alt \binope{\Ctxt}{e} \alt \binope{v}{\Ctxt}\\
+  \\
+  \tau  &:=& \boolt \alt \funct{\tau}{\tau}\\
+  \end{array}
+\]
+
+\section{Semantics One}
+
+\begin{gather*}
+\infr[App]
+  {\dstep{e_1}{\lamdefe{x}{e'}} \iand \dstep{e_2}{v} \iand \cdots}
+  {\dstep{e_1~e_2}{\subst{x}{v}{e'}}}
+~
+\infr
+  {\dstep{e_1}{v} \iand \cdots}
+  {\dstep{\letdefe{x}{e_1}{e_2}}{\subst{x}{v}{e_2}}}
+\\
+\infr
+  {\dstep{e_1}{\truev} \iand \dstep{e_2}{v}}
+  {\dstep{\ife{e_1}{e_2}{e_3}}{v}}
+~
+\infr
+  {\dstep{e_1}{\falsev} \iand \dstep{e_3}{v}}
+  {\dstep{\ife{e_1}{e_2}{e_3}}{v}}
+\\
+\infr
+  {\dstep{e_1}{\truev} \iand \dstep{e_2}{\truev}}
+  {\dstep{\ande{e_1}{e_2}}{\truev}}
+~
+\infr
+  {\dstep{e_1}{\falsev}}
+  {\dstep{\ande{e_1}{e_2}}{\falsev}}
+\\
+\infr
+  {\dstep{e_1}{\truev}}
+  {\dstep{\ore{e_1}{e_2}}{\truev}}
+~
+\infr
+  {\dstep{e_1}{\falsev} \iand \dstep{e_2}{v}}
+  {\dstep{\ore{e_1}{e_2}}{v}}
+\\
+\infr
+  {\dstep{e}{\truev}}
+  {\dstep{\note{e}}{\falsev}}
+~
+\infr
+  {\dstep{e}{\falsev}}     
+  {\dstep{\note{e}}{\truev}}
+\end{gather*}
+
+\section{Semantics Two}
+
+\[
+  \begin{array}{rcll}
+  \sstep  {(\lamdefe{x}{e})~v}      {\subst{x}{v}{e} (\cdots)}{App}\\
+  \sstep  {\letdefe{x}{v}{e}}       {\subst{x}{v}{e} (\cdots)}\\
+  \sstep  {\ife{\truev}{e_2}{e_3}}  {e_2}\\
+  \sstep  {\ife{\falsev}{e_2}{e_3}} {e_3}\\
+  \sstep  {\ande{\falsev}{e_2}}     {\falsev}\\
+  \sstep  {\ande{\truev}{e_2}}      {e_2}\\
+  \sstep  {\ore{\falsev}{e_2}}      {e_2}\\
+  \sstep  {\ore{\truev}{e_2}}       {\truev}\\
+  \sstep  {\note{\falsev}}          {\truev}\\
+  \sstep  {\note{\truev}}           {\falsev}\\
+  \\
+  \ctxtstep {\InCtxt{e}}            {\InCtxt{e'} ~ (\text{if } e\ssosredex e')}\\
+  \end{array}
+\]
+
+\section{Typing Judgments}
+
+\[
+  \begin{array}{cc}
+    \infr{}{\envent{\truev}{\boolt}}
+    &
+    \infr{}{\envent{\falsev}{\boolt}}
+    \\\\
+    \envlookup{\typeEnv}{x}{\tau} 
+    &
+    \infr
+      {\extenvent{x}{\tau}{e}{\tau'}}
+      {\envent{\lamdefe{x}{e}}{\funct{\tau}{\tau'}}} 
+    \\\\
+    \infr
+      {\envent{e_1}{\funct{\tau}{\tau'}} \iand 
+       \envent{e_2}{\tau}}
+      {\envent{e_1~e_2}{\tau'}} 
+    &
+    \infr
+      {\extenvent{x}{\tau'}{e_2}{\tau} \iand
+       \envent{e_1}{\tau'}}
+      {\envent{\letdefe{x}{e_1}{e_2}}{\tau}}
+    \\\\
+      \infr
+        {\envent{e_1}{\boolt} \iand \envent{e_2}{\tau} \iand \envent{e_3}{\tau}}
+        {\envent{\ife{e_1}{e_2}{e_3}}{\tau}}
+    &
+    \infr
+      {\envent{\unopdef}{\funct{\tau'}{\tau}} \iand
+       \envent{e}{\tau'}}
+      {\envent{\unope{e}}{\tau}}
+    \\\\
+    \multicolumn{2}{c}{ %% for a really LOOOOONG rule
+      \infr
+        {\envent{\binopdef}{\funct{\tau_1}{\funct{\tau_2}{\tau}}} \iand
+         \envent{e_1}{\tau_1}                                     \iand
+         \envent{e_2}{\tau_2}}
+        {\envent{\binope{e_1}{e_2}}{\tau}}
+    }
+    \\\\
+  \end{array}
+\]
+
+\end{document}
+

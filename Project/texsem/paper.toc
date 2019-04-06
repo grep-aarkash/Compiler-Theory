@@ -1,0 +1,26 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {subsection}{\numberline {1.1}Logical Relations}{2}
+\contentsline {subsubsection}{\numberline {1.1.1}Logical predicates}{2}
+\contentsline {subsubsection}{\numberline {1.1.2}Logical Relations}{2}
+\contentsline {subsection}{\numberline {1.2}Why do we need logical relations}{2}
+\contentsline {subsection}{\numberline {1.3}Defining a logical relation}{2}
+\contentsline {section}{\numberline {2}Simply Types Lambda Calculus (STLC)}{3}
+\contentsline {subsection}{\numberline {2.1}Language Definition}{3}
+\contentsline {subsection}{\numberline {2.2}Semantics}{3}
+\contentsline {subsection}{\numberline {2.3}Typing Judgements}{3}
+\contentsline {section}{\numberline {3}Strong-normalization for STLC using Logical Relations}{4}
+\contentsline {subsection}{\numberline {3.1}Why do we need logical predicates?}{4}
+\contentsline {subsection}{\numberline {3.2}Defining Logical predicate}{4}
+\contentsline {subsection}{\numberline {3.3}SN using Logical predicates}{4}
+\contentsline {section}{\numberline {4}Compiler Correctness }{6}
+\contentsline {subsection}{\numberline {4.1}Closure conversion}{6}
+\contentsline {subsubsection}{\numberline {4.1.1}Example}{6}
+\contentsline {subsubsection}{\numberline {4.1.2}General form of closure conversion}{6}
+\contentsline {subsection}{\numberline {4.2}Target Language}{7}
+\contentsline {subsection}{\numberline {4.3}Typing rules}{7}
+\contentsline {subsection}{\numberline {4.4}Types Translation}{7}
+\contentsline {subsection}{\numberline {4.5}Logical relations}{8}
+\contentsline {section}{\numberline {5}Language Definitions}{9}
+\contentsline {section}{\numberline {6}Semantics One}{9}
+\contentsline {section}{\numberline {7}Semantics Two}{9}
+\contentsline {section}{\numberline {8}Typing Judgments}{10}
