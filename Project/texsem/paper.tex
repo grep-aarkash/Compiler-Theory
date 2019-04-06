@@ -29,26 +29,25 @@
 \newpage
 
 \section{Introduction} 
-Logical relations was first introduced by Gordon Plotkin who was also the first to introduce operational semantics. Logical relations are type indexed inductive relations. In this work, I attempt to perform typed closure conversion using cross-language logical relation. The final goal was supposed to prove compositional compiler verification. However, due to time constraints, I stick to the initial part like I explain above. 
+Logical relations was first introduced by Gordon Plotkin. Logical relations are type indexed inductive relations. In this work, I attempt to perform typed closure conversion using cross-language logical relation. The final goal was supposed to prove full abstraction. However, due to time constraints, I stick to proving type preservation for two languages. 
 
 
 \subsection{Logical Relations}
-The first part of the project was to understand how to define a logical relation. Logical relations can be split into two categories: logical predicates and logical relations.
+The first part of the project is to understand how to define a logical relation. Logical relations can be split into two categories: logical predicates and logical relations.
 \subsubsection{Logical predicates}
- Logical predicates are the unary relations. These are defined by      P\textsubscript{$\tau$}(e). This means that some predicate P holds for some expression e over type $\tau$. These types of relations can be used to prove strong normalization and type safety.
+ Logical predicates are unary relations. These are defined by      P\textsubscript{$\tau$}(e). This means that some predicate P holds for some expression e over type $\tau$. These types of relations can be used to prove strong normalization and type safety.
  \subsubsection{Logical Relations}
  The second type of logical relations are termed as binary relations. These are described as R\textsubscript{$\tau$}(e1,e2). This expression says that there exists some relation R between terms e1 and e2 of the two languages. This type of relation can be used for showing program equivalence or some form of program equivalence. 
  
  \subsection{Why do we need logical relations}
  Using logical relations is very useful. Properties such as strong normalization and type-safety are very useful in languages with a well-defined type-system. However, the most interesting part about using LRs is in the case of equivalence of programs. 
  \newline
- Equivalence of programs within a programming language has a lot of benefits. We can us it to check the equivalence after we apply optimizations, to check the correctness of the program. We can also use it for security properties. To make sure that information flow policies hold. 
+ Equivalence of programs within a programming language has a lot of benefits. We can use it to check the equivalence after we apply optimizations to a program. It is necessary to make sure the program behaves the same as it did before optimizations. We can also use it for security properties. To make sure that information flow policies hold in a language. 
  \subsection{Defining a logical relation}
   In general, for a
-  logical predicate Pτ and an expression e, we want e to be accepted by the predicate
-  if it satisfies the following properties.
+  logical predicate P $\tau$ and an expression e, e is accepted by the predicate if it satisfies the following properties.
   \begin{enumerate}
-  	\item $\bullet$ $\envent${e}{$\tau$} 
+  	\item $\bullet$ $\vdash$ e: $\tau$
   	\item The property we wish e to have.
   	\item The condition is preserved by eliminating forms.
   \end{enumerate}
@@ -116,23 +115,23 @@ The first part of the project was to understand how to define a logical relation
   \]
   
   
-  The STLC is defined in the simplest way possible.
+  The STLC with minimum features and types.
   
   
   \newpage
   \section{Strong-normalization for STLC using Logical Relations}
-  In this section, I try to show that simply typed lambda calculus has strong normalization which means that every term is strongly normalizing. If a term is strongly normalizing, then it reduces to its normal form. In our case, the normal forms of the language are the values of the language for STLC.
+  In this section, I try to show that simply typed lambda calculus holds strong normalization which means that every term reduces to its normal form. In our case, the normal forms of the language are the values of the language for STLC.
   
   \subsection{Why do we need logical predicates?}
   \textbf{Theorem} ( Strong Normalization)
   \newline
   \vskip 0.1in
-%  If $ \bullet $ \envent{e}{$\tau$} then $\dstep${e}{}
+  If $ \bullet $ $\vdash$ e: $\tau$ then e $\Downarrow$
 \vskip 0.2in
 I first try to prove the above property using induction on the typing derivation. And I see that it fails.
 \vskip 0.1in
 
-\textit{Proof}. > The proof fails for the application case.
+\textit{Proof}. The proof fails for the application case.
 
   
    \[
@@ -150,7 +149,7 @@ I first try to prove the above property using induction on the typing derivation
   \end{array}
   \]
   By induction hypothesis we get that ${\dstep{e_1}{v_1}}$ and ${\dstep{e_2}{v_2}}$. By the type of $e_1$, we
- % conclude ${\dstep{e_1}{\lamdefe{x : \tau_2}{e'}}$
+  conclude ${\dstep{e_1}{\lamdefe{x : \tau_2}{e'}}}$
   . What I need to show is $e_1 e_2 \dstep{}{}$.
   \vskip 0.1in
   However, I  run into an issue as we do not know anything about $e'$. This tells us that our induction hypothesis is not strong enough. 
@@ -202,7 +201,7 @@ Similary, we can prove type-safety and equivalence of programs using logical rel
 
 \newpage
 \section{Compiler Correctness }
-The initial project goal was to use logical relations to prove full abstraction compiler correctness all the way down from a subset of C to a subset  of Ocaml. The Project has briefly given an overview as to how to construct logical relations. The construction methodology remains pretty similar. 
+The initial project goal was to use logical relations to prove full abstraction compiler correctness all the way down from a subset of C to a subset  of Ocaml. The Project has briefly given an overview as to how to construct logical relations.The intuition behind constructing logical relations remains the same as it did for unary relations.
 \vskip 0.2in
 \textbf{Compiler translation} In this work the compiler translation we consider is typed closure conversion.
 
@@ -248,8 +247,7 @@ v  &:=&  x \alt \lamdefe{x:\tau}{e} \alt n \alt <v_1,...,v_n> \\
 \end{array}
 \]
                                                                     \vskip 0.2in
-The evaluation function is defined as
-\vskip 0.1in
+
  $\bigtriangleup,\Gamma\vdash e: \tau $                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
   \subsection{Typing rules}
   \vskip 0.2in
@@ -298,9 +296,9 @@ The evaluation function is defined as
   \vskip 0.2in
   We want to show type-preserving compiler. 
   
-  \vskip 0.4in
+  \vskip 0.3in
   
-  \textit{It was becoming more and more difficult to use Latex, hence I skip a lot of details here. If you feel I should have included more, I will add them. The details are the same which I showed on the blackboard during the presentation. }
+  \textit{My report was exceeding the page limit, hence, I removed some obvious details. I can add them again, if you want.   }
   \vskip 0.2in
   
   Most of the type translations are straight forward which are the variables and the numbers. The interesting cases are the lambda and the application. 
@@ -314,157 +312,83 @@ The evaluation function is defined as
   My aim here is to use the method of defining unary logical relations to extend to binary logical relations. 
   
   \vskip 0.2in
-   V[[$\tau$]] = { (Vs,Vt) $\lvert$ $\bullet \vdash$ Vs : $\tau \wedge \bullet \vdash$ Vt : $\tau \textsuperscript{+}$ ...}
+\textbf{[1]. }V[[$\tau$]] = { (Vs,Vt) $\lvert$ $\bullet \vdash$ Vs : $\tau \wedge \bullet \vdash$ Vt : $\tau \textsuperscript{+}$ ...}
    
    \vskip 0.2in
-   The logical relation for the two languages is defined similar to how I had defined at the very beginning for proving strong normalization. 
+   The methodology of defining the LR is very similar to how it was done in Part 1 of my work. 
    \vskip 0.1in
    The first part is the relation. The second part is the property we are concerned about and finally something else. 
    What the property says is that if source has some type $\tau$ then the target should have some type $\tau$ \textsuperscript{+}
    
    \vskip 0.2in
  By doing induction over type derivatives we can make sure it works.
+ I have made parts from the second language in bolds. For eg. in the second typing rule, the part inside the pack is from the target language. 
+ \vskip 0.2in
+ 
+ \textbf{[2]. }V[[int]] = {(n,\textbf{n})}
+ \vskip 0.1in
+ \textbf{[3]. }V[[$\tau_1 \rightarrow \tau_2$]] = { $(\lambda x: \tau_1. e_1$, \textbf{pack($\tau_e, (\lambda(z:\tau_e,x$}:$\tau \textsuperscript{+}$)e, $V_e$) } $\lvert$ $\forall$ (V, \textbf{V})
+E V [[$\tau_1$]]. (e[v/x], \textbf{e[v$_e$/z][v/x]} E E[[$\tau_2$]])
+ 
+  
+  \vskip 0.1in
+  This is for the value relations.After doing it for as shown in the above two relations, we have to create the same for expressions of the two languages.  
+  \vskip 0.2in
+  \textbf{\textit{NOTE}} While writing these relations, it is very important to note that these should not be written by looking at the term by term translation relations. We just look at the end states of the compiler and build the type indexed inductive relations also called as logical relations. 
+  
+  \vskip 0.2in
+  
+  \textbf{[4]. }E[[$\tau$]] = {(e,\textbf{e})} $\lvert$$\forall$ v e $\rightarrow$\textsuperscript{*} v $\Longrightarrow$ $\exists$ \textbf{v e $\rightarrow$\textsuperscript{*} v } $\wedge$ (v,v) E V[[$\tau$]]
+  
+  \vskip 0.2in
+   \textbf{\textit{NOTE}} As shown in the above definition we can also have a symmetric definition, exchange the source and the target. Usually such symmetric exchanges are not possible in all the languages. However, in this case it is possible because of the way my two languages are defined. 
+  \vskip 0.2in
+  The entire point of using logical relations is that the proof becomes very easy to follow after the relations have been defined. After defining a relation between two things, we do not need to know about the translation. With just the final results we can prove things about a compiler correctness.
+  \vskip 0.1in
+  The final part about this is the general relation which we define.
+  
+  \vskip 0.2in
+  
+  \textbf{[5]. }G[[.]] = {$\phi$}
+  \vskip 0.1in
+   \textbf{[6]. }G[[$\Gamma$, x: $\tau$]] = {$\gamma$[x $\rightarrow$ (v,\textbf{v})] $\lvert$ $\gamma$ E G[[$\tau$]] $\wedge$ (v,\textbf{v}) E V[[$\tau$]] }
+  
+ \vskip 0.2in
+ 
+ Finally, this gets us to the final stage. 
+ \vskip 0.2in
+ 
+ 
+ $\Gamma \vdash e_s$ $\backsimeq$ \textbf{e$_t$: $\tau$} = 
+ \vskip 0.1in
+  $\Gamma \vdash e_s$: $\tau$ $\wedge$ $\bullet$; $\Gamma$ \textsuperscript{+} $\vdash$ \textbf{e}$_t$ : $\tau$ \textsuperscript{+} $\wedge$ $\forall$ $\gamma$ E G[[$\tau$]] ($\gamma_s$(e$_s$), \textbf{$\gamma_t$(e$_t$))} E E[[$\tau$]]
  
  \vskip 0.2in
  
- V[[int]] = {(n,n)}
+ \textbf{Theorem:} Fundamental property ( Compiler Correctness)
+ \vskip 0.2in
+ If [$\Gamma$ $\vdash$ e$_s$ :$\tau$ $\curvearrowright$ \textbf{e}$_t$]
  \vskip 0.1in
- V[[$\tau_1 \rightarrow \tau_2$]] 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  \newpage
-\section{Language Definitions}
+ then [$\Gamma$ $\vdash$ e$_s$  $\backsimeq$ \textbf{e}$_t$:$\tau$]
+ \vskip 0.1in
 
-\[
-  \begin{array}{rcl}
-  e  &:=& x \alt v \alt e~e \alt \letdefe{x}{e}{e}\\
-     &\alt& \ife{e}{e}{e} \alt \unope{e} \alt \binope{e}{e}\\
-  \\ %% A line break before the next definition sets
-  v  &:=& \lamdefe{x}{e} \alt \truev \alt \falsev\\
-  \\
-  \binopdef &:=& \andop \alt \orop\\
-  \unopdef  &:=& \notop \\
-  \\
-  \Ctxt &:=& \Ctxt~e \alt v~\Ctxt \alt \letdefe{x}{\Ctxt}{e}\\
-  &\alt& \ife{\Ctxt}{e}{e} \alt \unope{\Ctxt} \alt \binope{\Ctxt}{e} \alt \binope{v}{\Ctxt}\\
-  \\
-  \tau  &:=& \boolt \alt \funct{\tau}{\tau}\\
-  \end{array}
-\]
+ This helps us do type preservation for the two languages over closure conversion.
 
-\section{Semantics One}
+\newpage
+\section{Extensions}
+In the above section we proved compiler correctness by showing that it preserves the types during closure conversion. This is just a beginning. The eventual goal was to prove full abstraction correctness for the two languages. The next step for this would be to show compositional compiler correctness for the two languages that I have described above. After than we can extend that to show full abstraction step by step.
+\vskip 0.1in
+From my current understanding I can see that we cannot directly jump to proving full correctness. It's a step by step process. We select our languages for which we feel that it's important to prove such properties. It can be a DSL or any form of languages. But, more importantly the question we should ask ourselves before selecting the languages should be - "Do these languages need this property to hold and why". Once that is done,we should proceed in a step by step fashion. For proving a really strong property for a system, we should first make sure that they hold some weak ones. It's not always necessary to do so (Obviously). However, according to me it's always a good thing to proceed systematically. Start small and make it big rather than targeting that big golden property. 
+\vskip 0.1in
+I am aware from the current research work, that a lot of work has already been done in this area. People have been using logical relations since forever. People have also used logical relations to prove compiler correctness properties. Despite this, there is a lot of work which can be done in this area. Proving it for real languages will be so much more interesting. Languages which offer much more expressiveness than my described source and target languages. This is the reason that operation semantics when combined with denotational semantics can help us proving much stronger properties. Since operation semantics can give us the expressiveness and the denotational semantics can give us the formalism. 
 
-\begin{gather*}
-\infr[App]
-  {\dstep{e_1}{\lamdefe{x}{e'}} \iand \dstep{e_2}{v} \iand \cdots}
-  {\dstep{e_1~e_2}{\subst{x}{v}{e'}}}
-~
-\infr
-  {\dstep{e_1}{v} \iand \cdots}
-  {\dstep{\letdefe{x}{e_1}{e_2}}{\subst{x}{v}{e_2}}}
-\\
-\infr
-  {\dstep{e_1}{\truev} \iand \dstep{e_2}{v}}
-  {\dstep{\ife{e_1}{e_2}{e_3}}{v}}
-~
-\infr
-  {\dstep{e_1}{\falsev} \iand \dstep{e_3}{v}}
-  {\dstep{\ife{e_1}{e_2}{e_3}}{v}}
-\\
-\infr
-  {\dstep{e_1}{\truev} \iand \dstep{e_2}{\truev}}
-  {\dstep{\ande{e_1}{e_2}}{\truev}}
-~
-\infr
-  {\dstep{e_1}{\falsev}}
-  {\dstep{\ande{e_1}{e_2}}{\falsev}}
-\\
-\infr
-  {\dstep{e_1}{\truev}}
-  {\dstep{\ore{e_1}{e_2}}{\truev}}
-~
-\infr
-  {\dstep{e_1}{\falsev} \iand \dstep{e_2}{v}}
-  {\dstep{\ore{e_1}{e_2}}{v}}
-\\
-\infr
-  {\dstep{e}{\truev}}
-  {\dstep{\note{e}}{\falsev}}
-~
-\infr
-  {\dstep{e}{\falsev}}     
-  {\dstep{\note{e}}{\truev}}
-\end{gather*}
+\vskip 0.1in
+My goal is to someday be able to prove full abstraction for a cyber physical system which in some ways is more tricky because CPS usually don't just use one language. They have multiple languages hence the linking of different languages also become an important part of this area. I want to automate the entire process for Cyber physical system so that the developers don't have to worry about languages. They can use different languages for different applications in their CPS or what people call it nowdays IoT without having security concerns.  
 
-\section{Semantics Two}
 
-\[
-  \begin{array}{rcll}
-  \sstep  {(\lamdefe{x}{e})~v}      {\subst{x}{v}{e} (\cdots)}{App}\\
-  \sstep  {\letdefe{x}{v}{e}}       {\subst{x}{v}{e} (\cdots)}\\
-  \sstep  {\ife{\truev}{e_2}{e_3}}  {e_2}\\
-  \sstep  {\ife{\falsev}{e_2}{e_3}} {e_3}\\
-  \sstep  {\ande{\falsev}{e_2}}     {\falsev}\\
-  \sstep  {\ande{\truev}{e_2}}      {e_2}\\
-  \sstep  {\ore{\falsev}{e_2}}      {e_2}\\
-  \sstep  {\ore{\truev}{e_2}}       {\truev}\\
-  \sstep  {\note{\falsev}}          {\truev}\\
-  \sstep  {\note{\truev}}           {\falsev}\\
-  \\
-  \ctxtstep {\InCtxt{e}}            {\InCtxt{e'} ~ (\text{if } e\ssosredex e')}\\
-  \end{array}
-\]
 
-\section{Typing Judgments}
 
-\[
-  \begin{array}{cc}
-    \infr{}{\envent{\truev}{\boolt}}
-    &
-    \infr{}{\envent{\falsev}{\boolt}}
-    \\\\
-    \envlookup{\typeEnv}{x}{\tau} 
-    &
-    \infr
-      {\extenvent{x}{\tau}{e}{\tau'}}
-      {\envent{\lamdefe{x}{e}}{\funct{\tau}{\tau'}}} 
-    \\\\
-    \infr
-      {\envent{e_1}{\funct{\tau}{\tau'}} \iand 
-       \envent{e_2}{\tau}}
-      {\envent{e_1~e_2}{\tau'}} 
-    &
-    \infr
-      {\extenvent{x}{\tau'}{e_2}{\tau} \iand
-       \envent{e_1}{\tau'}}
-      {\envent{\letdefe{x}{e_1}{e_2}}{\tau}}
-    \\\\
-      \infr
-        {\envent{e_1}{\boolt} \iand \envent{e_2}{\tau} \iand \envent{e_3}{\tau}}
-        {\envent{\ife{e_1}{e_2}{e_3}}{\tau}}
-    &
-    \infr
-      {\envent{\unopdef}{\funct{\tau'}{\tau}} \iand
-       \envent{e}{\tau'}}
-      {\envent{\unope{e}}{\tau}}
-    \\\\
-    \multicolumn{2}{c}{ %% for a really LOOOOONG rule
-      \infr
-        {\envent{\binopdef}{\funct{\tau_1}{\funct{\tau_2}{\tau}}} \iand
-         \envent{e_1}{\tau_1}                                     \iand
-         \envent{e_2}{\tau_2}}
-        {\envent{\binope{e_1}{e_2}}{\tau}}
-    }
-    \\\\
-  \end{array}
-\]
+
 
 \end{document}
 
